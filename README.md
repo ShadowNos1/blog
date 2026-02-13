@@ -200,15 +200,6 @@ npm run dev                       # Запустится на http://localhost:5
 
 ---
 
-
-Bash
-
-docker-compose up -d --build
-3. Настройка Backend
-Выполните команды внутри контейнера blog-app для установки зависимостей и настройки базы данных:
-
-Bash
-
 # Установка зависимостей Composer
 docker exec -it blog-app composer install
 
