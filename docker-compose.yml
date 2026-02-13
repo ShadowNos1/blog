@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  # PHP и Laravel
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: blog-app
+    volumes:
+      - ./backend:/var/www
+    networks:
+      - blog-network
+
+  # Веб-сервер Nginx
+  web:
+    image: nginx:alpine
+    container_name: blog-web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./backend:/var/www
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - blog-network
+
+  # База данных MySQL
+  db:
+    image: mysql:8.0
+    container_name: blog-db
+    environment:
+      MYSQL_DATABASE: blog_db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
+    networks:
+      - blog-network
+
+networks:
+  blog-network:
+    driver: bridge
